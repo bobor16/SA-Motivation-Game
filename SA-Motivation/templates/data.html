@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climbing Game Data</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        body {
+            background-color: #e8f4fa; /* Lys blå baggrund */
+        }
+
+        header {
+            background-color: #ffcc00; /* Gul baggrund for header */
+            color: #fff; /* Hvid tekst */
+            font-size: 24px; /* Større tekststørrelse */
+        }
+
+        button {
+            border: 2px solid #fff; /* Hvid kant */
+            transition: transform 0.3s; /* Tilføj en lille animation ved hover */
+        }
+
+        button:hover {
+            transform: scale(1.05); /* Lidt zoom ved hover */
+        }
+
+        #progressSection {
+            border: 2px dashed #4CAF50; /* Grønt stregmønster */
+            padding: 20px;
+            border-radius: 10px; /* Rundede hjørner */
+            background-color: #f9f9f9; /* Lys grå baggrund */
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* Let skygge */
+        }
+
+        #bunnyContainer {
+            background-color: #fff; /* Hvid baggrund for kanincontainer */
+            border: 2px solid #ff99cc; /* Lyserød kant */
+            border-radius: 10px; /* Rundede hjørner */
+            padding: 10px;
+        }
+
+        #bunny {
+            width: 60px; /* Juster kaninens bredde */
+            height: auto; /* Behold højden i forhold til bredden */
+        }
+
+        #achievementLabels span {
+            background-color: #ffeb3b; /* Gul baggrund */
+            padding: 5px;
+            border-radius: 5px; /* Rundede hjørner */
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Climbing Progress!</h1>
+        <button onclick="window.location.href='/'">🏠 Back to Home</button>
+    </header>
+
+    <div>
+	<h2>Total Climbs: <span id="totalClimbs">0</span></h2>
+	<h3>Points Value: <span id="pointsValue">0</span></h3>
+	<button id="redeemButton">Redeem Points</button>
+
+    </div>
+
+    <div>
+        <label for="goalInput">🎯 Set your climbing goal:</label>
+        <input type="number" id="goalInput" min="1" placeholder="Enter goal" />
+        <button id="setGoalButton">Set Goal!</button>
+    </div>
+
+    <div>
+        <label for="day">📅 Select a day:</label>
+        <input type="date" id="day" />
+    </div>
+
+    <div>
+        <p id="climbCount">0</p>
+        <button id="resetCountButton" class="red-button">Reset Count!</button>
+    </div>
+
+    <div id="progressSection">
+        <div id="progressBarContainer">
+            <div id="progressBar">0 / 0</div>
+        </div>
+        <div id="bunnyContainer">
+            <img id="bunny" src="/static/badges/bunny.png" alt="Bunny">
+        </div>
+
+        <div id="achievementLabels">
+            <span id="bronzeLabel">0 Climbs for Bronze!</span>
+            <span id="silverLabel">0 Climbs for Silver!</span>
+            <span id="goldLabel">0 Climbs for Gold!</span>
+        </div>
+    </div>
+
+    <div id="achievements"></div>
+
+    <script src="/static/js/progress.js"></script>
+</body>
+</html>
+

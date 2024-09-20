@@ -1,0 +1,14 @@
+{
+  "name": "sa-motivation",
+  "version": "1.0.0",
+  "description": "A game that is aimed to motivate children with cerebral palsy, in active gamification climb a rib to count the amout of climbs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Borgar Bordoy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
