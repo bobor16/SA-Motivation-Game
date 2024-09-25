@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Automatisk hent data for i dag
     fetchClimbAndGoal(dayInput.value);
-    loadTotalClimbs(); // Ny funktion til at hente total klatringer
 
     // Start interval for at tjekke klatredata hvert 5. sekund
     setInterval(() => {
@@ -40,85 +39,43 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchClimbAndGoal(selectedDay);
     });
 
-    // redeemPoints funktionen
-    async function redeemPoints() {
-        try {
-            // Send request to redeem points
-            const response = await fetch('/redeem_points', { method: 'POST' });
-            
-            if (response.ok) {
-                const data = await response.json();
-                // Opdater totalClimbs og pointsValue til 0
-                document.getElementById('totalClimbs').innerText = '0';
-                document.getElementById('pointsValue').innerText = '0'; // Points resettes
-                alert(data.message);
-            } else {
-                alert('Failed to redeem points.');
-            }
-        } catch (error) {
-            console.error('Error redeeming points:', error);
-        }
-    }
-
-    document.getElementById('redeemButton').addEventListener('click', redeemPoints);
-
-    // Funktion til at hente total klatringer
-    async function loadTotalClimbs() {
-        try {
-            const response = await fetch('/get_total_climbs');
-            if (response.ok) {
-                const data = await response.json();
-                document.getElementById('totalClimbs').innerText = data.total_climbs; // Opdater total climbs
-                document.getElementById('pointsValue').innerText = data.total_climbs; // Opdater points
-            } else {
-                console.error('Failed to fetch total climbs.');
-            }
-        } catch (error) {
-            console.error('Error loading total climbs:', error);
-        }
-    }
-
-function fetchClimbAndGoal(selectedDay) {
-    console.log("Fetching climb count and goal for selected day:", selectedDay);
-    
-    fetch(`/get_climb_and_goal?day=${selectedDay}`)
-        .then(response => response.json())
-        .then(data => {
-            const climbCountElement = document.getElementById('climbCount');
-            const totalClimbs = data.total_climbs || 0; // Default til 0 hvis undefined
-            if (climbCountElement) {
-                climbCountElement.textContent = totalClimbs;
-            }
-
-            // Opdater det gemte mål for dagen
-            if (data.goal !== undefined) { // Kontroller for undefined
-                currentGoal = data.goal; // Brug målet fra databasen
-                document.getElementById('goalInput').value = data.goal;
-                setAchievements(data.goal);
-            } else {
-                console.log("No goal found for the selected day, using default goal.");
-                setAchievements(currentGoal);
-            }
-
-            console.log("Climb count:", totalClimbs);
-            console.log("Current goal:", currentGoal);
-            updateProgress(totalClimbs);
-
-            if (totalClimbs > lastClimbCount) {
-                const newClimbs = totalClimbs - lastClimbCount;
-                for (let i = 0; i < newClimbs; i++) {
-                    moveBunny();
+    function fetchClimbAndGoal(selectedDay) {
+        console.log("Fetching climb count and goal for selected day:", selectedDay);
+        
+        fetch(`/get_climb_and_goal?day=${selectedDay}`)
+            .then(response => response.json())
+            .then(data => {
+                const climbCountElement = document.getElementById('climbCount');
+                if (climbCountElement) {
+                    climbCountElement.textContent = data.total_climbs || 0;
                 }
-            }
 
-            lastClimbCount = totalClimbs;
-            climbingData.push({ day: selectedDay, count: totalClimbs });
-        })
-        .catch(error => {
-            console.error('Error fetching climb count and goal:', error);
-        });
-}
+                // Opdater det gemte mål for dagen
+                if (data.goal) {
+                    currentGoal = data.goal;
+                    document.getElementById('goalInput').value = data.goal;
+                    setAchievements(data.goal);
+                } else {
+                    console.log("No goal found for the selected day, using default goal.");
+                    setAchievements(currentGoal);
+                }
 
+                if (data.total_climbs > lastClimbCount) {
+                    const newClimbs = data.total_climbs - lastClimbCount;
+                    for (let i = 0; i < newClimbs; i++) {
+                        moveBunny();
+                    }
+                }
+
+                lastClimbCount = data.total_climbs;
+                climbingData.push({ day: selectedDay, count: data.total_climbs });
+                
+                updateProgress(data.total_climbs);
+            })
+            .catch(error => {
+                console.error('Error fetching climb count and goal:', error);
+            });
+    }
 
     function saveGoalForDay(day, goal) {
         fetch('/save_goal', {
@@ -142,42 +99,8 @@ function fetchClimbAndGoal(selectedDay) {
         });
     }
 
-    const resetCountButton = document.getElementById('resetCountButton');
-
-    resetCountButton.addEventListener('click', function() {
-        const selectedDay = dayInput.value;
-        resetClimbCount(selectedDay);
-    });
-
-    function resetClimbCount(day) {
-        fetch('/reset_count', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ day: day })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to reset count');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Count reset successfully for", day);
-            bunnyPosition = 0;
-            bunny.style.transform = `translateX(${bunnyPosition}px)`;
-            lastClimbCount = 0; // Reset last climb count in the JS
-            updateProgress(0); // Update progress bar to show 0
-            fetchClimbAndGoal(day); // Refresh climb and goal data
-        })
-        .catch(error => {
-            console.error('Error resetting count:', error);
-        });
-    }
-
     function setAchievements(goal) {
-        const bronzeThreshold = Math.max(1, Math.ceil(goal * 0.3));
+        const bronzeThreshold = Math.floor(goal * 0.3);
         const silverThreshold = Math.floor(goal * 0.7);
         const goldThreshold = goal;
 
@@ -189,20 +112,16 @@ function fetchClimbAndGoal(selectedDay) {
     }
 
     function updateProgress(count) {
-        if (currentGoal === undefined || currentGoal <= 0) {
-            console.error('Current goal is not defined or invalid:', currentGoal);
-            return; // Stop funktionen hvis målet er ugyldigt
-        }
-        
         const progressPercentage = Math.min((count / currentGoal) * 100, 100);
         document.getElementById('progressBar').style.width = `${progressPercentage}%`;
-
+    
         const bronzeThreshold = Math.floor(currentGoal * 0.3);
         const silverThreshold = Math.floor(currentGoal * 0.7);
         const goldThreshold = currentGoal;
-
+    
+        // Opdater progress tekst
         document.getElementById('progressBar').textContent = `${count} / ${currentGoal}`;
-
+    
         checkAchievements(count, bronzeThreshold, silverThreshold, goldThreshold);
     }
 
@@ -210,7 +129,7 @@ function fetchClimbAndGoal(selectedDay) {
         const achievementsDiv = document.getElementById('achievements');
         let achievements = '';
 
-        if (count >= bronze && count > 0) {
+        if (count >= bronze) {
             achievements += '<img src="/static/badges/bronze.png" alt="Bronze Achievement" />';
         }
         if (count >= silver) {
@@ -223,18 +142,50 @@ function fetchClimbAndGoal(selectedDay) {
         achievementsDiv.innerHTML = achievements;
     }
 
+    const resetCountButton = document.getElementById('resetCountButton');
+
+    resetCountButton.addEventListener('click', function() {
+        const selectedDay = dayInput.value;
+        resetClimbCount(selectedDay);
+    });
+    
+    function resetClimbCount() {
+        fetch('/reset_count', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ day: dayInput.value })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to reset climb count');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Climb count reset successfully for", dayInput.value);
+            bunnyPosition = 0;
+            bunny.style.transform = `translateX(${bunnyPosition}px)`;
+            lastClimbCount = 0;
+            updateProgress(0);
+        })
+        .catch(error => {
+            console.error('Error resetting climb count:', error);
+        });
+    }
+
     function moveBunny() {
         const bunnyContainer = document.getElementById('bunnyContainer');
         const containerWidth = bunnyContainer.clientWidth;
         const bunnyWidth = bunny.clientWidth;
-
-        bunnyPosition += containerWidth / currentGoal; // Beregn afstand til at tage en omgang baseret på målet
-
+    
+        bunnyPosition += containerWidth / currentGoal;
+    
         if (bunnyPosition > containerWidth) {
-            bunnyPosition = 0; // Hvis kaninen når enden, reset til start
+            bunnyPosition = 0;
         }
-
+    
         bunny.style.transform = `translateX(${bunnyPosition}px)`;
     }
 });
-

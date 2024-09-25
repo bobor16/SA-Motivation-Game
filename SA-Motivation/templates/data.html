@@ -60,13 +60,6 @@
     </header>
 
     <div>
-	<h2>Total Climbs: <span id="totalClimbs">0</span></h2>
-	<h3>Points Value: <span id="pointsValue">0</span></h3>
-	<button id="redeemButton">Redeem Points</button>
-
-    </div>
-
-    <div>
         <label for="goalInput">🎯 Set your climbing goal:</label>
         <input type="number" id="goalInput" min="1" placeholder="Enter goal" />
         <button id="setGoalButton">Set Goal!</button>
@@ -75,8 +68,8 @@
     <div>
         <label for="day">📅 Select a day:</label>
         <input type="date" id="day" />
+        <button id="getCountButton">Get Climb Count!</button>
     </div>
-
     <div>
         <p id="climbCount">0</p>
         <button id="resetCountButton" class="red-button">Reset Count!</button>
@@ -102,4 +95,3 @@
     <script src="/static/js/progress.js"></script>
 </body>
 </html>
-
