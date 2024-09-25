@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tilføj event listener for at ændre dato
     dayInput.addEventListener('change', function() {
         const selectedDay = dayInput.value;
+        resetBunnyPosition();  // Nulstil kaninens position, når datoen ændres
         fetchClimbAndGoal(selectedDay);
     });
 
@@ -60,10 +61,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     setAchievements(currentGoal);
                 }
 
-                if (data.total_climbs > lastClimbCount) {
-                    const newClimbs = data.total_climbs - lastClimbCount;
-                    for (let i = 0; i < newClimbs; i++) {
-                        moveBunny();
+                // Nulstil kaninens position og flyt den baseret på den aktuelle klatretæller
+                resetBunnyPosition();
+                if (data.total_climbs > 0) {
+                    for (let i = 0; i < data.total_climbs; i++) {
+                        moveBunny(data.total_climbs); // Flyt kaninen i forhold til klatretallet
                     }
                 }
 
@@ -165,8 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             console.log("Climb count reset successfully for", dayInput.value);
-            bunnyPosition = 0;
-            bunny.style.transform = `translateX(${bunnyPosition}px)`;
+            resetBunnyPosition(); // Nulstil kaninen ved nulstilling af klatretælleren
             lastClimbCount = 0;
             updateProgress(0);
         })
@@ -175,17 +176,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function moveBunny() {
+    function resetBunnyPosition() {
+        bunnyPosition = 0;
+        bunny.style.transform = `translateX(${bunnyPosition}px)`;
+    }
+
+    function moveBunny(climbCount) {
         const bunnyContainer = document.getElementById('bunnyContainer');
         const containerWidth = bunnyContainer.clientWidth;
         const bunnyWidth = bunny.clientWidth;
-    
-        bunnyPosition += containerWidth / currentGoal;
-    
+        const house = document.getElementById('bunnyhouse');
+        const houseWidth = house.clientWidth;
+        // Flyt kaninen i forhold til mål og klatretæller
+        bunnyPosition = (climbCount / currentGoal) * (containerWidth - houseWidth);
+
         if (bunnyPosition > containerWidth) {
-            bunnyPosition = 0;
+            bunnyPosition = containerWidth;
         }
-    
+
         bunny.style.transform = `translateX(${bunnyPosition}px)`;
     }
 });

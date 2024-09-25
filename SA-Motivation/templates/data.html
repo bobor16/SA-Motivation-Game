@@ -4,52 +4,189 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Climbing Game Data</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Generel styling */
         body {
-            background-color: #e8f4fa; /* Lys blå baggrund */
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
         }
 
         header {
-            background-color: #ffcc00; /* Gul baggrund for header */
-            color: #fff; /* Hvid tekst */
-            font-size: 24px; /* Større tekststørrelse */
+            width: 100%;
+            background-color: #ffcc00; /* Gul baggrund */
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
         }
 
         button {
-            border: 2px solid #fff; /* Hvid kant */
-            transition: transform 0.3s; /* Tilføj en lille animation ved hover */
+            background-color: #ff6f61;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            margin-top: 15px;
         }
 
         button:hover {
-            transform: scale(1.05); /* Lidt zoom ved hover */
+            background-color: #ff8976;
+            transform: translateY(-3px);
+        }
+
+        #goalInput, #day {
+            padding: 10px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            margin-top: 10px;
+        }
+
+        div {
+            margin-top: 20px;
+            text-align: center;
         }
 
         #progressSection {
-            border: 2px dashed #4CAF50; /* Grønt stregmønster */
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
             padding: 20px;
-            border-radius: 10px; /* Rundede hjørner */
-            background-color: #f9f9f9; /* Lys grå baggrund */
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* Let skygge */
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        #progressBarContainer {
+            background-color: #ddd;
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+            height: 30px;
+            width: 100%;
+        }
+
+        #progressBar {
+            background-color: #4CAF50;
+            height: 100%;
+            border-radius: 15px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
         }
 
         #bunnyContainer {
-            background-color: #fff; /* Hvid baggrund for kanincontainer */
-            border: 2px solid #ff99cc; /* Lyserød kant */
-            border-radius: 10px; /* Rundede hjørner */
-            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
         }
 
         #bunny {
-            width: 60px; /* Juster kaninens bredde */
-            height: auto; /* Behold højden i forhold til bredden */
+            width: 50px; /* Mindre størrelse */
+            height: auto;
+        }
+
+        #bunnyhouse {
+            width: 60px; /* Mindre størrelse */
+            height: auto;
+        }
+
+        #achievementLabels {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px; /* Mindre margin */
+            flex-wrap: wrap; /* Tillader wrap */
         }
 
         #achievementLabels span {
-            background-color: #ffeb3b; /* Gul baggrund */
-            padding: 5px;
-            border-radius: 5px; /* Rundede hjørner */
+            background-color: #ffeb3b;
+            padding: 3px 6px; /* Mindre padding */
+            border-radius: 10px;
+            font-size: 0.8rem; /* Mindre fontstørrelse */
+            display: inline-block;
             margin: 5px;
+            white-space: nowrap; /* Forhindrer linjeskift */
+        }
+
+        /* Responsiv styling */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            button {
+                padding: 8px 15px;
+                font-size: 1rem;
+            }
+
+            #progressSection {
+                width: 90%;
+            }
+
+            #goalInput, #day {
+                font-size: 1rem;
+            }
+
+            #achievementLabels {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #achievementLabels span {
+                font-size: 0.75rem; /* Mindre på små skærme */
+                padding: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            button {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+
+            #goalInput, #day {
+                font-size: 0.9rem;
+            }
+
+            #bunny {
+                width: 40px; /* Mindre kanin */
+            }
+
+            #bunnyhouse {
+                width: 50px; /* Mindre hus */
+            }
+
+            #achievementLabels {
+                flex-direction: column;
+            }
+
+            #achievementLabels span {
+                font-size: 0.7rem; /* Mindre på små skærme */
+                padding: 4px;
+            }
         }
     </style>
 </head>
@@ -60,16 +197,16 @@
     </header>
 
     <div>
-        <label for="goalInput">🎯 Set your climbing goal:</label>
+        <label for="goalInput">🎯 Set your climbing goal:</label><br>
         <input type="number" id="goalInput" min="1" placeholder="Enter goal" />
         <button id="setGoalButton">Set Goal!</button>
     </div>
 
     <div>
-        <label for="day">📅 Select a day:</label>
+        <label for="day">📅 Select a day:</label><br>
         <input type="date" id="day" />
-        <button id="getCountButton">Get Climb Count!</button>
     </div>
+
     <div>
         <p id="climbCount">0</p>
         <button id="resetCountButton" class="red-button">Reset Count!</button>
@@ -81,6 +218,7 @@
         </div>
         <div id="bunnyContainer">
             <img id="bunny" src="/static/badges/bunny.png" alt="Bunny">
+            <img id="bunnyhouse" src="/static/badges/bunnyhouse.png" alt="Bunnyhouse">
         </div>
 
         <div id="achievementLabels">
