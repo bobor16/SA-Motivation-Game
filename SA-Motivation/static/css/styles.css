@@ -26,62 +26,59 @@ button:hover {
 }
 
 .red-button {
-    background-color: red;
-    color: white;
+	background-color: red;
+	color: white;
 }
 
 .red-button:hover {
-    background-color: darkred;
-    cursor: pointer;
+	background-color: darkred;
+	cursor: pointer;
 }
+
 
 #progressBarContainer {
     width: 100%;
     background-color: #f3f3f3;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-top: 10px; /* Justeret margin */
+    margin-top: 20px;
     position: relative;
 }
 
 #progressBar {
     width: 0%;
-    height: 20px; /* Justeret højde */
+    height: 30px;
     background-color: #4CAF50;
     text-align: center;
-    line-height: 20px; /* Justeret til højden */
+    line-height: 30px;
     color: white;
     border-radius: 5px;
 }
 
 #achievements img {
-    width: 80px; /* Mindre størrelse */
-    height: auto;
     margin: 5px;
 }
 
 #bunnyContainer {
-    position: relative;
-    width: 100%;
-    height: 80px; /* Justeret højde */
-    overflow: hidden;
+	position: relative;
+	width: 100%;
+	height: 150px;
+	overflow: hidden;
 }
-
 #bunny {
     position: absolute; /* Gør det muligt at flytte kaninen */
     left: 0; /* Startposition */
     transition: left 2s; /* Animationstid (2 sekunder) */
-    width: 40px; /* Mindre kanin */
+    width: 80px; /* Juster kaninens bredde */
     height: auto; /* Behold højden i forhold til bredden */
-    margin-top: 10px; /* Justeret margin */
+    margin-top: 15px;
 }
-
 #bunnyhouse {
     margin: 15px;
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 50px; /* Mindre hus */
+    width: 110px;
     height: auto;
 }
 
@@ -97,3 +94,5 @@ button:hover {
 .bunny-animation {
     animation: moveBunny 2s forwards; /* Animation varighed på 2 sekunder */
 }
+
+
