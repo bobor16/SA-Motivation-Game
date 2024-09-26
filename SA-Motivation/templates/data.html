@@ -106,8 +106,10 @@
             /* Start width for animation purposes */
         }
 
+
         /* Responsiv kanin-opsætning */
         #bunnyContainer {
+            position: relative;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -115,8 +117,31 @@
             width: 100%;
         }
 
-        #bunny,
+        #bunny {
+            position: absolute;
+            bottom: 0;
+            /* Sørg for, at kaninen starter fra bunden */
+            left: 0;
+            /* Start kaninen i venstre side */
+            z-index: 1;
+            /* Lavere z-index end huset */
+            transition: transform 0.5s ease;
+            /* For smidig bevægelse */
+        }
+
         #bunnyhouse {
+            position: absolute;
+            bottom: 0;
+            /* Samme justering som kaninen */
+            right: 0;
+            /* Placer huset i højre side */
+            z-index: 2;
+            /* Højere z-index så huset er foran */
+        }
+
+
+        #bunnyhouse,
+        #bunny {
             width: 60px;
             height: auto;
         }
@@ -145,8 +170,8 @@
                 font-size: 1.8rem;
             }
 
-            #bunny,
-            #bunnyhouse {
+            #bunnyhouse,
+            #bunny {
                 width: 50px;
             }
 
@@ -165,8 +190,8 @@
                 font-size: 1.5rem;
             }
 
-            #bunny,
-            #bunnyhouse {
+            #bunnyhouse,
+            #bunny {
                 width: 45px;
             }
 
@@ -236,8 +261,7 @@
                 font-size: 1.2rem;
             }
 
-            #bunny,
-            #bunnyhouse {
+            #bunnyhouse #bunny {
                 width: 100px;
                 height: auto;
             }
