@@ -131,6 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const achievementsDiv = document.getElementById('achievements');
         let achievements = '';
 
+        // if goal or climb count is 0, there shall be no medals.
+        if (currentGoal === 0 || count === 0) {
+            achievementsDiv.innerHTML = achievements;
+            return;
+        }
+
         if (count >= bronze) {
             achievements += '<img src="/static/badges/bronze.png" alt="Bronze Achievement" />';
         }
