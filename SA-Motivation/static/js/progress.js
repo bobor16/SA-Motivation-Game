@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Show medals only if achieved
         if (count >= bronze) {
             achievements += '<img src="/static/badges/bronze.png" alt="Bronze Achievement" />';
         }

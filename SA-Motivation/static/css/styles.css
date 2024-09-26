@@ -115,13 +115,11 @@ button {
 #bunny {
     width: 60px;
     height: auto;
-    z-index: 1;
 }
 
 #bunnyhouse {
     width: 70px;
     height: auto;
-    z-index: 2;
 }
 
 #achievementLabels {
@@ -135,6 +133,29 @@ button {
     padding: 5px 10px;
     border-radius: 10px;
     font-size: 1rem;
+}
+
+/* Medal section styling */
+.medal-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 30%;
+}
+
+.medal img {
+    width: 20px; /* Just an example size */
+    height: auto;
+    margin-bottom: 10px;
 }
 
 /* Responsive adjustments */
@@ -176,5 +197,9 @@ button {
     #achievementLabels span {
         font-size: 0.8rem;
         padding: 4px;
+    }
+
+    .medal img {
+        width: 60px; /* Adjusted size for mobile */
     }
 }

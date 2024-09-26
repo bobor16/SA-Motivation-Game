@@ -4,10 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Motivations Spil</title>
-    <!-- Google Fonts -->
+    <title>Climbing Game Data</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Link til ekstern CSS-fil -->
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 
@@ -19,13 +17,13 @@
 
     <div class="content-container">
         <div class="input-section">
-            <label for="goalInput">🎯 Set et mål:</label>
+            <label for="goalInput">🎯 Set your climbing goal:</label>
             <input type="number" id="goalInput" min="1" placeholder="Enter goal" />
             <button id="setGoalButton">Set Goal!</button>
         </div>
 
         <div class="input-section">
-            <label for="day">📅 Vælg en dag:</label>
+            <label for="day">📅 Select a day:</label>
             <input type="date" id="day" />
         </div>
 
@@ -48,6 +46,21 @@
                 <span id="bronzeLabel">0 Climbs for Bronze!</span>
                 <span id="silverLabel">0 Climbs for Silver!</span>
                 <span id="goldLabel">0 Climbs for Gold!</span>
+            </div>
+        </div>
+
+        <div class="medal-section">
+            <div class="medal">
+                <img src="/static/badges/bronze.png" alt="Bronze Medal">
+                <p>Bronze Medal</p>
+            </div>
+            <div class="medal">
+                <img src="/static/badges/silver.png" alt="Silver Medal">
+                <p>Silver Medal</p>
+            </div>
+            <div class="medal">
+                <img src="/static/badges/gold.png" alt="Gold Medal">
+                <p>Gold Medal</p>
             </div>
         </div>
 
