@@ -16,9 +16,9 @@ def landing():
     return render_template('index.html')
 
 # Route for climbing game (this can be your index page for climbing)
-@app.route('/data')
+@app.route('/klatre-spil')
 def climbing_game():
-    return render_template('data.html')  # Render the climbing game page
+    return render_template('klatre-spil.html')  # Render the climbing game page
 
 # Route for getting all climb data
 @app.route('/get_all_climbs', methods=['GET'])
@@ -112,7 +112,7 @@ def reset_count():
             conn.commit()
 
             print(f"Recieved request to reset count for day: {day}")
-            
+
         return jsonify({'message': 'Count reset successfully'}), 200
     except Exception as e:
         print(f"Error resetting count: {e}")  # Log the error
