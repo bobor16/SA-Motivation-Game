@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Climbing Game Data</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Klatre Spillet!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 
 <body>
     <header>
-        <h1>Climbing Progress!</h1>
+        <h1>Klatre Spillet!</h1>
         <button onclick="window.location.href='/'">🏠 Back to Home</button>
     </header>
 
@@ -48,25 +49,13 @@
                 <span id="goldLabel">0 Climbs for Gold!</span>
             </div>
         </div>
-
         <div class="medal-section">
             <div class="medal">
-                <img src="/static/badges/bronze.png" alt="Bronze Medal">
-                <p>Bronze Medal</p>
-            </div>
-            <div class="medal">
-                <img src="/static/badges/silver.png" alt="Silver Medal">
-                <p>Silver Medal</p>
-            </div>
-            <div class="medal">
-                <img src="/static/badges/gold.png" alt="Gold Medal">
-                <p>Gold Medal</p>
+                <div id="achievements"></div>
             </div>
         </div>
 
-        <div id="achievements"></div>
     </div>
-
     <script src="/static/js/progress.js"></script>
 </body>
 

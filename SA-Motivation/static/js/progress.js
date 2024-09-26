@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log("DOM fully loaded and parsed");
 
     const dayInput = document.getElementById('day');
@@ -21,14 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000); // Opdater hvert 5000 ms (5 sekunder)
 
     // Tilføj event listener for at ændre dato
-    dayInput.addEventListener('change', function() {
+    dayInput.addEventListener('change', function () {
         const selectedDay = dayInput.value;
         resetBunnyPosition();  // Nulstil kaninens position, når datoen ændres
         fetchClimbAndGoal(selectedDay);
     });
 
     // Tilføj event listener for at sætte mål
-    setGoalButton.addEventListener('click', function() {
+    setGoalButton.addEventListener('click', function () {
         const goal = parseInt(document.getElementById('goalInput').value);
         currentGoal = goal;
         setAchievements(goal);
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchClimbAndGoal(selectedDay) {
         console.log("Fetching climb count and goal for selected day:", selectedDay);
-        
+
         fetch(`/get_climb_and_goal?day=${selectedDay}`)
             .then(response => response.json())
             .then(data => {
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 lastClimbCount = data.total_climbs;
                 climbingData.push({ day: selectedDay, count: data.total_climbs });
-                
+
                 updateProgress(data.total_climbs);
             })
             .catch(error => {
@@ -87,18 +87,18 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({ day: day, goal: goal })
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to save goal');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Goal saved successfully for", day);
-        })
-        .catch(error => {
-            console.error('Error saving goal:', error);
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save goal');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Goal saved successfully for", day);
+            })
+            .catch(error => {
+                console.error('Error saving goal:', error);
+            });
     }
 
     function setAchievements(goal) {
@@ -116,14 +116,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateProgress(count) {
         const progressPercentage = Math.min((count / currentGoal) * 100, 100);
         document.getElementById('progressBar').style.width = `${progressPercentage}%`;
-    
+
         const bronzeThreshold = Math.floor(currentGoal * 0.3);
         const silverThreshold = Math.floor(currentGoal * 0.7);
         const goldThreshold = currentGoal;
-    
+
         // Opdater progress tekst
         document.getElementById('progressBar').textContent = `${count} / ${currentGoal}`;
-    
+
         checkAchievements(count, bronzeThreshold, silverThreshold, goldThreshold);
     }
 
@@ -138,26 +138,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Show medals only if achieved
-        if (count >= bronze) {
-            achievements += '<img src="/static/badges/bronze.png" alt="Bronze Achievement" />';
-        }
-        if (count >= silver) {
-            achievements += '<img src="/static/badges/silver.png" alt="Silver Achievement" />';
-        }
-        if (count >= gold) {
-            achievements += '<img src="/static/badges/gold.png" alt="Gold Achievement" />';
-        }
 
+        switch (true) {
+            case (count >= gold):
+                achievements += '<img class="achievement" src="/static/badges/gold.png" alt="Gold Achievement" />';
+                break;
+            case (count >= silver):
+                achievements += '<img class="achievement" src="/static/badges/silver.png" alt="Silver Achievement" />';
+                break;
+            case (count >= bronze):
+                achievements += '<img class="achievement" src="/static/badges/bronze.png" alt="Bronze Achievement" />';
+                break;
+            default:
+                achievements = '';
+                break;
+        }
         achievementsDiv.innerHTML = achievements;
     }
 
     const resetCountButton = document.getElementById('resetCountButton');
 
-    resetCountButton.addEventListener('click', function() {
+    resetCountButton.addEventListener('click', function () {
         const selectedDay = dayInput.value;
         resetClimbCount(selectedDay);
     });
-    
+
     function resetClimbCount() {
         fetch('/reset_count', {
             method: 'POST',
@@ -166,21 +171,21 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({ day: dayInput.value })
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to reset climb count');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Climb count reset successfully for", dayInput.value);
-            resetBunnyPosition(); // Nulstil kaninen ved nulstilling af klatretælleren
-            lastClimbCount = 0;
-            updateProgress(0);
-        })
-        .catch(error => {
-            console.error('Error resetting climb count:', error);
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to reset climb count');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Climb count reset successfully for", dayInput.value);
+                resetBunnyPosition(); // Nulstil kaninen ved nulstilling af klatretælleren
+                lastClimbCount = 0;
+                updateProgress(0);
+            })
+            .catch(error => {
+                console.error('Error resetting climb count:', error);
+            });
     }
 
     function resetBunnyPosition() {
